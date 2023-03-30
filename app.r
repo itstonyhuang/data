@@ -305,7 +305,7 @@ server <- function(input, output, session){
                 avg_dist = mean(distance))
   })
   
-  my_script <- readLines("/Users/tonyhuang/Desktop/stat_108/project1-group10/ShinyApps/bostonflights/app.r")
+  my_script <- readLines("https://raw.githubusercontent.com/itstonyhuang/data/main/app.r")
 
   #render the R script in the code tab
   output$code <- renderPrint({
