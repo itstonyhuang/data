@@ -11,6 +11,9 @@ library(ggthemes); library(lattice); library(leafpop); library(scales)
 library(tidyverse); library(lubridate); library(stringr); library(terra)
 library(sf); library(sp)
 
+# deploy app to web
+library(rsconnect)
+
 
 # Read in 2018 Boston Flight Data
 boston_flights <- read.table("https://raw.githubusercontent.com/itstonyhuang/data/main/bosflights18.txt", header = TRUE, sep=",")
@@ -217,7 +220,7 @@ ui <- navbarPage("Boston Flights", theme = shinytheme("sandstone"),
                                he is always dragging his friends to sample the latest ice cream flavors with him!
                                This summer, he will be interning at West Monroe as a Mergers & Acquisitions Consultant in NYC.
                                He aspires to become the CEO of a Fortune 500 company in the near future!")),
-                                                         actionButton("tonyemailButton", "Contact via Email  ", class = "btn btn-primary",icon = icon("envelope"), width = "400px"))),
+                                                         )),
                                               column(width = 4,  img(src = "https://images.squarespace-cdn.com/content/v1/628beaedda3c807dda0c134d/cf72e9ff-3435-43b1-ab33-9f3ae20a8f0c/unnamed.png?format=1000w", height = 300, width = 300),
                                                      tags$div(style = "text-align: left; font-size: 20px; font-weight: bold; margin: 5px 0;", "Corbin Lubianski"),
                                                      div(style = "width: 400px; overflow: hidden; text-overflow: ellipsis;",
@@ -227,7 +230,7 @@ ui <- navbarPage("Boston Flights", theme = shinytheme("sandstone"),
                              Outside of class, he loves to play board games with friends like Catan or on the Switch like Smash.
       
                              After graduation, Corbin aspires to work at the Federal Reserve as a research assistant with hopes to manage the levers of monetary policy at a wider level in the future!")),
-                                                         actionButton("corbinemailButton", "Contact via Email", class = "btn btn-primary",icon = icon("envelope"), width = "400px"))
+                                                         )
                                               ),
                                               column(width = 4,  img(src = "https://images.squarespace-cdn.com/content/v1/54f50fb4e4b0014ec1a1959f/1660754145116-5VY87EMDQMOLIP81YD3A/Asteria%2Bhcfa.jpg", height = 300, width = 300),
                                                      tags$div(style = "text-align: left; font-size: 20px; font-weight: bold; margin: 5px 0;", "Asteria Chilambo"),
@@ -237,8 +240,9 @@ ui <- navbarPage("Boston Flights", theme = shinytheme("sandstone"),
                              Hailing from Tanzania, Asteria has always been fascinated by the beauty and power of mathematics, as well as its intersection with data science and statistics.
                              In addition to her academic pursuits, Asteria is deeply committed to the empowerment of girls in STEM, using her knowledge and experience to help create opportunities for young women in these fields.
                              In her free time, Asteria cherishes spending time with her family and loved ones.
-                             "))),
-                                                     actionButton("asteemailButton", "Contact via Email  ", class = "btn btn-primary",icon = icon("envelope"), width = "400px")))),
+                             ")
+                                                           )),
+                                                     ))),
                             tabPanel("Data",
                                      fluidRow(
                                        column(width = 6, h2("Organizations", align = "center"),
@@ -305,23 +309,7 @@ server <- function(input, output, session){
              text = "Your one-stop shop for exploring and analyzing flight data from Boston Logan International Airport in 2018. With this dashboard, you can dive deep into the data to uncover insights and trends related to flight delays, and more. Use the sidebar navigation to learn how to use the different tabs of the app. Our goal is to help you gain a deeper understanding of flight patterns and improve your travel experience. Enjoy!") 
   #Users are invited to provide feedback by emailing us. Our Contact information can be found on the 'About' page of this dashboard.")
   
-  # Contact Asteria via email
-  observeEvent(input$asteemailButton, {
-    url <- "https://mail.google.com/mail/?view=cm&fs=1&to=asteriachilambo@college.harvard.edu&su="
-    browseURL(url)
-  })
-  
-  # Contact Corbin via email
-  observeEvent(input$corbinemailButton, {
-    url <- "https://mail.google.com/mail/?view=cm&fs=1&to=clubianski@college.harvard.edu&su="
-    browseURL(url)
-  })
-  
-  # Contact Tony via email
-  observeEvent(input$tonyemailButton, {
-    url <- "https://mail.google.com/mail/?view=cm&fs=1&to=tony_huang@college.harvard.edu&su="
-    browseURL(url)
-  })
+
   
   # Message for the home button
   observeEvent(input$homeBtn, {
